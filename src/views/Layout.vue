@@ -36,13 +36,20 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+.ant-menu-item-selected
+  color rgb(25,219,122)
+  border-bottom 2px solid rgb(25,219,122)
+.ant-menu-item:hover
+  color rgb(25,219,122)
+  border-bottom 2px solid rgb(25,219,122)
 .header
   width 483px
   margin 0 auto
 
 .main
-  width 800px
-  height 520px
-  background #ccc
+  width 1100px
+  height 620px
+  padding 0 20px 20px 20px
+  // background #ccc
   margin 20px auto
 </style>
