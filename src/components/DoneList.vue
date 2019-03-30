@@ -1,10 +1,10 @@
 <template>
   <div class="list">
     <ul>
-      <li>
+      <li v-for="(item, index) in list" :key="index">
         <div class="list_item">
           <div class="item_left">
-            <span>233</span>
+            <span>{{ item }}</span>
           </div>
           <div class="item_right">
             <div class="icon_contenter">
@@ -28,6 +28,12 @@
 
 <script>
 export default {
+  props: {
+    list: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
     }
@@ -42,7 +48,7 @@ export default {
 }
 
 ul {
-  height: 160px;
+  height: 175px;
   overflow: auto;
   margin: 0;
   padding: 0;
@@ -58,8 +64,8 @@ li {
   height: 35px;
   background: #fff;
   margin-left: 83px;
-  margin-bottom: 5px;
-  border-bottom: 3px solid #aaa;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #aaa;
 
   .item_left {
     width: 70%;
@@ -67,6 +73,12 @@ li {
     // background: gray;
     float: left;
     padding: 5px;
+
+    span {
+      color: rgb(89, 89, 89)
+      font-weight: 600;
+      font-size: 16px
+    }
   }
 
   .item_right {
@@ -85,9 +97,10 @@ li {
         margin-right: 5px;
         font-size: 25px;
       }
-      .icon:hover{
-        cursor pointer
-        background #ddd
+
+      .icon:hover {
+        cursor: pointer;
+        background: #ddd;
       }
     }
   }

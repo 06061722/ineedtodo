@@ -9,14 +9,16 @@
     <main class="list_contenter">
       <div class="todo">
         <h2>待办事项</h2>
-        <a-button class="button_1" type="primary">添加</a-button>
-        <a-input class="input_1" placeholder="Basic usage"/>
-        <a-button class="button_2" type="primary">确定添加</a-button>
-        <yet-do-list></yet-do-list>
+        <div style="height: 32px">
+          <a-button class="button_1" type="primary" @click="handleShow">添加</a-button>
+          <a-input class="input_1" placeholder="Basic usage" v-show="isAdd" v-model="addedContent"/>
+          <a-button class="button_2" type="primary" v-show="isAdd" @click="handleAdd">确定添加</a-button>
+        </div>
+        <yet-do-list :list="todoList"></yet-do-list>
       </div>
       <div class="done">
         <h2>完成</h2>
-        <done-list></done-list>
+        <done-list :list="doneList"></done-list>
       </div>
     </main>
   </div>
@@ -25,6 +27,7 @@
 <script>
 import YetDoList from '_c/YetDoList.vue'
 import DoneList from '_c/DoneList.vue'
+import { getTodoList, getDoneList } from '@/api/todolist'
 export default {
   components: {
     YetDoList,
@@ -32,9 +35,29 @@ export default {
   },
   data () {
     return {
+      isAdd: false,
+      addedContent: '',
+      todoList: [],
+      doneList: []
     }
   },
-  methods: {}
+  methods: {
+    handleShow () {
+      this.isAdd = !this.isAdd
+    },
+    handleAdd () { },
+    handleUpdate () {
+      getTodoList().then(res => {
+        this.todoList = res
+      })
+      getDoneList().then(res => {
+        this.doneList = res
+      })
+    }
+  },
+  mounted () {
+    this.handleUpdate()
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -67,13 +90,14 @@ export default {
   background-color: rgba(25, 219, 122, 0.4);
   border-color: #fff;
 }
-.ant-input:hover,.ant-input:focus{
+
+.ant-input:hover, .ant-input:focus {
   border-color: rgba(25, 219, 122, 1);
 }
 
 .input_1 {
   width: 350px;
-  margin-left 30px
-  margin-right 10px
+  margin-left: 30px;
+  margin-right: 10px;
 }
 </style>

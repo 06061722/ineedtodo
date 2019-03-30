@@ -2,7 +2,7 @@
   <div class="login-wrapper">
     <div class="login-title">
       <img class="login-title-icon" src="@/assets/logo.png">
-      <div>I&nbsp;Need&nbsp;To&nbsp;Do</div>
+      <div>登陆</div>
     </div>
     <a-form
       id="components-form-demo-normal-login"
@@ -37,15 +37,17 @@
         <a-button type="primary" html-type="submit" class="login-form-button">Log in</a-button>
         <div class="register">
           <span>Or&nbsp;</span>
-          <a href>register now!</a>
+          <a href="/register">register now!</a>
         </div>
-        <a class="login-form-forgot" href>忘记密码</a>
+        <a class="login-form-forgot" href='#' @click="handleForget">忘记密码</a>
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script>
+import { login } from '@/api/user.js'
+import { setToken } from '@/lib/util.js'
 export default {
   beforeCreate () {
     this.form = this.$form.createForm(this)
@@ -55,9 +57,23 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          // console.log('Received values of form: ', values)
+          login().then(res => {
+            if (res.code === 200 && res.data.token) {
+              setToken(res.data.token)
+              console.log(res)
+              this.$router.push('todolist')
+              this.$message.success('登陆成功')
+            } else {
+              this.$message.warning('登陆失败')
+            }
+          }
+          ).catch(err => console.log(err))
         }
       })
+    },
+    handleForget () {
+      this.$message.warning('未开放此功能')
     }
   }
 }

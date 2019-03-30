@@ -5,6 +5,9 @@ import 'ant-design-vue/dist/antd.css'
 import '@/assets/font/iconfont.js'
 import router from './router'
 import store from './store'
+
+require('@/mock')
+
 Vue.config.productionTip = false
 
 Vue.use(Antd)

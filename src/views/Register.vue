@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { register } from '@/api/user.js'
 export default {
   beforeCreate () {
     this.form = this.$form.createForm(this)
@@ -50,7 +51,17 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          register().then(res => {
+            if (res.code === 200 && res.data.token) {
+              // setToken(res.data.token)
+              console.log(res)
+              this.$router.push('login')
+              this.$message.success('注册成功')
+            } else {
+              this.$message.warning('用户名已被使用')
+            }
+          }
+          ).catch(err => console.log(err))
         }
       })
     }
