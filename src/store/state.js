@@ -1,3 +1,5 @@
-const state = {}
+const state = {
+  UserId: localStorage.getItem('UserId') || ''
+}
 
 export default state

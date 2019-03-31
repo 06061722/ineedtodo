@@ -1,30 +1,25 @@
 <template>
   <div class="list">
+    <modal-add ref="modalAdd" :visible="visible" @cancel="handleCancel" @submit="handleSubmit()"/>
     <ul>
       <li v-for="(item, index) in list" :key="index">
         <div class="list_item">
           <div class="item_left">
-            <span>{{ item }}</span>
+            <span>{{ item[0] }}</span>
           </div>
           <div class="item_right">
             <div class="icon_contenter">
-              <i @click="handleedit">
-                <modal-add
-                  ref="modalAdd"
-                  :visible="visible"
-                  @cancel="handleCancel"
-                  @submit="handleSubmit(index)"
-                />
+              <i @click="handleEdit(index)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-xingzhuanggongnengtubiao-"></use>
                 </svg>
               </i>
-              <i>
+              <i @click="handleDone(index)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-xingzhuanggongnengtubiao-1"></use>
                 </svg>
               </i>
-              <i>
+              <i @click="handleTrash(index)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-xingzhuanggongnengtubiao-2"></use>
                 </svg>
@@ -39,6 +34,7 @@
 
 <script>
 import ModalAdd from '_c/ModalAdd'
+import { updateContent, updateStatus, deleteContent } from '@/api/todolist.js'
 export default {
   components: { ModalAdd },
   props: {
@@ -49,27 +45,46 @@ export default {
   },
   data () {
     return {
-      visible: false
+      visible: false,
+      index: 0,
+      content: ''
     }
   },
   methods: {
-    handleedit () {
+    handleEdit (index) {
       this.visible = true
+      this.index = index
+      this.content = this.list[index][0]
+      const form = this.$refs.modalAdd.form
+      this.$nextTick(() => {
+        form.setFieldsValue({ 'content': this.content })
+      })
     },
-    handleSubmit (index) {
-      const form = this.$refs.modalAdd[index].form
-      console.log(form)
-      form.validateFields((err, values) => {
+    handleSubmit () {
+      const form = this.$refs.modalAdd.form
+      form.validateFields(async (err, values) => {
         if (err) {
           return
         }
-        console.log('Received values of form: ', values)
+        await updateContent(this.list[this.index][1], values.content)
+        this.$emit('update')
         form.resetFields()
         this.visible = false
+        this.$message.success('编辑成功')
       })
     },
     handleCancel () {
       this.visible = false
+    },
+    async handleDone (index) {
+      this.index = index
+      await updateStatus(this.list[this.index][1])
+      this.$emit('update')
+    },
+    async handleTrash (index) {
+      this.index = index
+      await deleteContent(this.list[this.index][1])
+      this.$emit('update')
     }
   }
 }

@@ -56,9 +56,10 @@ export default {
 
 .main {
   width: 1100px;
-  height: 620px;
+  height: 638px;
   padding: 0 20px 20px 20px;
   // background #ccc
+  border: 1px solid rgba(25, 219, 122, 1)
   margin: 25px auto;
 }
 </style>

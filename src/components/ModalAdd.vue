@@ -12,7 +12,7 @@
         <a-input
           placeholder="请输入内容"
           v-decorator="[
-              '内容',
+              'content',
               {
                 rules: [{ required: true, message: '请输入内容!' }],
               }
@@ -27,7 +27,6 @@
 export default {
   beforeCreate () {
     this.form = this.$form.createForm(this)
-    // console.log(this)
   },
   props: {
     visible: {

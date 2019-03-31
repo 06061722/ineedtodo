@@ -51,14 +51,13 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          register().then(res => {
-            if (res.code === 200 && res.data.token) {
+          register(values).then(res => {
+            if (res.error_code === 0) {
               // setToken(res.data.token)
-              console.log(res)
               this.$router.push('login')
               this.$message.success('注册成功')
             } else {
-              this.$message.warning('用户名已被使用')
+              this.$message.warning('用户名已存在')
             }
           }
           ).catch(err => console.log(err))

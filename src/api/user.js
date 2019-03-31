@@ -17,16 +17,24 @@ export const authorization = () => {
   })
 }
 
-export const register = () => {
+export const register = ({ userName, password }) => {
   return axios.request({
-    url: '/register',
-    method: 'get'
+    url: '/api/users',
+    method: 'post',
+    data: {
+      username: userName,
+      password
+    }
   })
 }
 
-export const login = () => {
+export const login = ({ userName, password }) => {
   return axios.request({
-    url: '/login',
-    method: 'post'
+    url: '/api/users/login',
+    method: 'post',
+    data: {
+      username: userName,
+      password
+    }
   })
 }

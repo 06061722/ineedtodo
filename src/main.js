@@ -6,7 +6,7 @@ import '@/assets/font/iconfont.js'
 import router from './router'
 import store from './store'
 
-require('@/mock')
+// require('@/mock')
 
 Vue.config.productionTip = false
 

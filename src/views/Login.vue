@@ -47,7 +47,6 @@
 
 <script>
 import { login } from '@/api/user.js'
-import { setToken } from '@/lib/util.js'
 export default {
   beforeCreate () {
     this.form = this.$form.createForm(this)
@@ -57,11 +56,11 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          // console.log('Received values of form: ', values)
-          login().then(res => {
-            if (res.code === 200 && res.data.token) {
-              setToken(res.data.token)
-              console.log(res)
+          login(values).then(res => {
+            if (res.error_code === 0) {
+              const UserId = res.data.user_id
+              this.$store.dispatch('setUserId', UserId)
+              localStorage.setItem('UserId', UserId)
               this.$router.push('todolist')
               this.$message.success('登陆成功')
             } else {
